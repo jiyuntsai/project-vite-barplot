@@ -1,22 +1,23 @@
 import * as d3 from "d3";
 
 const Barplot = ({ data }) => {
-  const width = 500;
-  const height = 400;
+  // create the size of the plot, margin-left helps preserve space for country names
+  const width = 600;
+  const height = 600;
   const margin = { top: 20, right: 40, bottom: 20, left: 100 };
 
-  // 扣掉邊距後,真正能畫圖的空間
+  // innerWidth and innerHeight will create the actual space to draw the plot
   const innerWidth = width - margin.left - margin.right;
   const innerHeight = height - margin.top - margin.bottom;
 
-  // Y 軸:每個國家分到一格高度
+  // each y scale gets the same amount of space (a row of bar)
   const yScale = d3
     .scaleBand()
     .domain(data.map((d) => d.country))
     .range([0, innerHeight])
     .padding(0.2);
 
-  // X 軸:學生數 → 長度
+  // x scale is the length of the number
   const xScale = d3
     .scaleLinear()
     .domain([0, d3.max(data, (d) => d.students)])
@@ -24,6 +25,7 @@ const Barplot = ({ data }) => {
 
   return (
     <svg width={width} height={height}>
+      {/* transform helps move the chart right and bottom */}
       <g transform={`translate(${margin.left}, ${margin.top})`}>
         {data.map((d) => (
           <g key={d.country}>
@@ -33,9 +35,10 @@ const Barplot = ({ data }) => {
               y={yScale(d.country)}
               width={xScale(d.students)}
               height={yScale.bandwidth()}
-              fill="steelblue"
+              fill="pink"
+              rx={4}
             />
-            {/* 國家名稱(bar 左邊) */}
+            {/* country name on the left side */}
             <text
               x={-8}
               y={yScale(d.country) + yScale.bandwidth() / 2}
@@ -45,7 +48,7 @@ const Barplot = ({ data }) => {
             >
               {d.country}
             </text>
-            {/* 數值(bar 右邊) */}
+            {/* value on the right side */}
             <text
               x={xScale(d.students) + 5}
               y={yScale(d.country) + yScale.bandwidth() / 2}
