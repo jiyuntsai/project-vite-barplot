@@ -1,10 +1,8 @@
 import { useState } from "react";
 import "./App.css";
-// import Barplot from "./Barplot.jsx";
+import Barplot from "./Barplot.jsx";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   const data = [
     { country: "United States", students: 68 },
     { country: "France", students: 21 },
@@ -35,6 +33,9 @@ function App() {
       <section id="center">
         <div className="hero">
           <h1>Barplot vite project</h1>
+          <div style={{ display: "flex", gap: 24 }}>
+            <Barplot data={data} />
+          </div>
         </div>
       </section>
 
